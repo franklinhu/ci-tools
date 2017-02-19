@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+BUCKET="thisisfranklin-builds-us-west-2"
+DIR=$1
+
+DATE_STAMP=`date +"%Y-%m-%d-%s"`
+TAR_FILE="${CIRCLE_PROJECT_REPONAME}-${CIRCLE_BRANCH}-${DATE_STAMP}-${CIRCLE_SHA1}.tar.gz"
+tar -zcvf $TAR_FILE -C $DIR .
+aws s3 cp $TAR_FILE s3://$BUCKET/${CIRCLE_PROJECT_REPONAME}/$TAR_FILE
+
